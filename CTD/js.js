@@ -1,4 +1,5 @@
 function connect() {
+   var username = $('#username').val();
    var IP = $('#IP').val();
    var port = $('#port').val();
    
@@ -11,17 +12,15 @@ function connect() {
          ws.onopen = function() {
             
             // Web Socket is connected, send data using send()
-            ws.send("Message to send");
-            alert("Message is sent...");
+            ws.send(`clientconnect ${username}`);
          };
          
          ws.onmessage = function (evt) { 
             var received_msg = evt.data;
-            alert("Message is received...");
+            alert(received_msg);
          };
          
          ws.onclose = function() { 
-            
             // websocket is closed.
             alert("Disconnected"); 
             $("#connectmenu").show();
