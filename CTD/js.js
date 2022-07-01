@@ -1,9 +1,9 @@
 function connect() {
    var IP = $('#IP').val();
    var port = $('#port').val();
-   alert(`Connecting to ${IP}:${port}...`)
    
    if ("WebSocket" in window) {
+      $("#connectmenu").hide();
       try {
          // open websocket
          var ws = new WebSocket(`ws://${IP}:${port}/CTD`);
@@ -24,10 +24,12 @@ function connect() {
             
             // websocket is closed.
             alert("Disconnected"); 
+            $("#connectmenu").show();
          };
       }
       catch(e) {
          alert("Invalid IP or port");
+         $("#connectmenu").show();
       }
    } else {
       alert("Websocket is not supported by your browser :c");

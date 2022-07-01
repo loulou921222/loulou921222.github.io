@@ -13,7 +13,7 @@
       <a class="helptext" href="javascript:;" onclick="helptext()">help</a>
       <h1 class="title text-center">cipher. transpher. decipher.</h1>
       <div class="bg-secondary" id="connectmenu">
-         <form id="infoform" onsubmit="connect()" method="post">
+         <form id="infoform" onsubmit="connect();return false" method="post">
             <div class="mb-3">
             <label for="IP" class="form-label text-white">Server IP</label>
             <input type="text" class="form-control" id="IP">
