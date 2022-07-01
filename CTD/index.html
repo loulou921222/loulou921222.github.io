@@ -10,18 +10,19 @@
         <script type="text/javascript" src="js.js"></script>
    </head>
    <body>
-      <a class="helptext" href="#" onclick="helptext()">help</a>
+      <a class="helptext" href="javascript:;" onclick="helptext()">help</a>
       <h1 class="title text-center">cipher. transpher. decipher.</h1>
       <div class="bg-secondary" id="connectmenu">
-         <form>
+         <form id="infoform" onsubmit="connect()" method="post">
             <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label text-white">Server IP</label>
-            <input type="email" class="form-control" id="exampleInputEmail1">
+            <label for="IP" class="form-label text-white">Server IP</label>
+            <input type="text" class="form-control" id="IP">
             </div>
             <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label text-white">Port</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <label for="port" class="form-label text-white">Port</label>
+            <input type="text" class="form-control" id="port" value="32040">
             </div>
+            <input type="submit" hidden />
          </form>
       </div>
 

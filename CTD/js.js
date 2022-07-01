@@ -1,30 +1,37 @@
 function connect() {
+   var IP = $('#IP').val();
+   var port = $('#port').val();
+   alert(`Connecting to ${IP}:${port}...`)
+   
+   if ("WebSocket" in window) {
+      try {
+         // open websocket
+         var ws = new WebSocket(`ws://${IP}:${port}/CTD`);
+         
+         ws.onopen = function() {
             
-    if ("WebSocket" in window) {
-       
-       // open websocket
-       var ws = new WebSocket("ws://localhost:8080/CTD");
-        
-       ws.onopen = function() {
-          
-          // Web Socket is connected, send data using send()
-          ws.send("Message to send");
-          alert("Message is sent...");
-       };
-        
-       ws.onmessage = function (evt) { 
-          var received_msg = evt.data;
-          alert("Message is received...");
-       };
-        
-       ws.onclose = function() { 
-          
-          // websocket is closed.
-          alert("Connection is closed..."); 
-       };
-    } else {
-       alert("Websocket is not supported by your browser :c");
-    }
+            // Web Socket is connected, send data using send()
+            ws.send("Message to send");
+            alert("Message is sent...");
+         };
+         
+         ws.onmessage = function (evt) { 
+            var received_msg = evt.data;
+            alert("Message is received...");
+         };
+         
+         ws.onclose = function() { 
+            
+            // websocket is closed.
+            alert("Disconnected"); 
+         };
+      }
+      catch(e) {
+         alert("Invalid IP or port");
+      }
+   } else {
+      alert("Websocket is not supported by your browser :c");
+   }
 }
 
 function helptext() {
