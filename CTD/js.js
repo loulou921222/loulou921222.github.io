@@ -1,9 +1,8 @@
-function WebSocketTest() {
+function connect() {
             
     if ("WebSocket" in window) {
-       alert("WebSocket is supported by your Browser!");
        
-       // Let us open a web socket
+       // open websocket
        var ws = new WebSocket("ws://localhost:8080/CTD");
         
        ws.onopen = function() {
@@ -24,8 +23,10 @@ function WebSocketTest() {
           alert("Connection is closed..."); 
        };
     } else {
-      
-       // The browser doesn't support WebSocket
-       alert("WebSocket NOT supported by your Browser!");
+       alert("Websocket is not supported by your browser :c");
     }
- }
+}
+
+function helptext() {
+   alert("all players type out a string of characters, let's say player 1 types out \"bananA.\"\nplayer 2 sees my message and has to explain it to player 3 in a voice chat or just next to them\nplayer 3 has to type out the same string for the game to continue\nbe careful! someone might type in \"a in all caps\" or \"period question mark\" or something like that!");
+}
