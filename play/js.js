@@ -28,7 +28,7 @@ function connect() {
             }
             if (command == "players") {
                players = data.split(" ")
-               $(".playerList").text()
+               $(".playerList").text("")
                for (playerindex = 0; playerindex < players.length; playerindex++) {
                   var listitem = '<li>'+ players[playerindex] +'</li>';
                   $('.playerList').append(listitem);
