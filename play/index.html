@@ -14,9 +14,12 @@
          <a href="../download/CTDServer.jar" class="link" download>server download</a>
          <a href="javascript:;" class="link" onclick="helptext()">help</a>
       </div>
-      <p class="username"></p>
+      <div class="usernamediv">
+         <span class="username">loulou921222!</span>
+         <span class="leadermsg">(leader)</span>
+      </div>
       <h1 class="title text-center">cipher. transpher. decipher.</h1>
-      <div id="connectmenu">
+      <div id="connectmenudiv">
          <form id="infoform" onsubmit="connect();return false" method="post">
             <div class="mb-3">
                <label for="username" class="form-label">Username</label>
@@ -33,10 +36,11 @@
             <input type="submit" hidden />
          </form>
       </div>
-      <div id="playerlist">
+      <div id="playerlistdiv">
          <span>Player count: </span>
-         <span class="playerCount">-</span>
-         <ul class="playerList"></ul>
+         <span class="playercount"></span>
+         <ul class="playerlist"></ul>
+         <button type="button" class="startbtn btn btn-light">Start! (3 or more players are required to start)</button>
       </div>
    </body>
 </html>

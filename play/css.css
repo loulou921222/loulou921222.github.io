@@ -1,4 +1,4 @@
-#connectmenu {
+#connectmenudiv {
     max-width: 400px;
     max-height: 400px;
     margin: 25vh auto;
@@ -8,7 +8,7 @@
     color: white;
 }
 
-#playerlist {
+#playerlistdiv {
     max-width: 400px;
     max-height: 400px;
     margin: 25vh auto;
@@ -39,13 +39,21 @@ body {
     background-color: paleturquoise;
 }
 
-.username {
+.usernamediv {
     color: white;
     position: absolute;
-    bottom: 5px;
+    bottom: 20px;
     left: 20px;
     border-radius: 5px;
     padding: 5px;
     background-color: #8a8a8a;
+    display: none;
+}
+
+.leadermsg {
+    display: none;
+}
+
+.startbtn {
     display: none;
 }

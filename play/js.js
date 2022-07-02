@@ -4,18 +4,19 @@ function connect() {
    var port = $('#port').val();
    
    if ("WebSocket" in window) {
-      $("#connectmenu").hide();
+      $("#connectmenudiv").hide();
       var playerCount = 0;
       var players = []
+      var permissionLevel = 0;
 
       try {
          // open websocket
          var ws = new WebSocket(`ws://${IP}:${port}/CTD`);
          
          ws.onopen = function() {
-            $("#playerlist").show();
+            $("#playerlistdiv").show();
             $(".username").text(username);
-            $(".username").show();
+            $(".usernamediv").show();
             // Web Socket is connected, send data using send()
             ws.send(`clientConnect ${username}`);
          };
@@ -26,14 +27,30 @@ function connect() {
             var data = receivedText.slice(receivedText.indexOf(" ") + 1);
             if (command == "playerCount") {
                playerCount = parseInt(data);
-               $(".playerCount").text(playerCount);
+               $(".playercount").text(playerCount);
             }
             if (command == "players") {
                players = data.split(" ")
-               $(".playerList").text("")
+               $(".playerlist").text("")
                for (playerindex = 0; playerindex < players.length; playerindex++) {
-                  var listitem = '<li>'+ players[playerindex] +'</li>';
-                  $('.playerList').append(listitem);
+                  if (playerindex == 0) {
+                     var listitem = '<li>'+ players[playerindex] + ' (leader)</li>';
+                  }
+                  else {
+                     var listitem = '<li>'+ players[playerindex] +'</li>';
+                  }
+                  $('.playerlist').append(listitem);
+               }
+            }
+            if (command == "permissionLevel") {
+               permissionLevel = parseInt(data);
+               if (permissionLevel) {
+                  $(".leadermsg").show()
+                  $(".startbtn").show()
+               }
+               else {
+                  $(".leadermsg").hide()
+                  $(".startbtn").hide()
                }
             }
          };
@@ -41,16 +58,16 @@ function connect() {
          ws.onclose = function() { 
             // websocket is closed.
             alert("Disconnected");
-            $("#playerlist").hide();
-            $(".username").hide();
-            $("#connectmenu").show();
+            $("#playerlistdiv").hide();
+            $(".usernamediv").hide();
+            $("#connectmenudiv").show();
          };
       }
       catch(e) {
          alert("Invalid IP or port");
-         $("#playerlist").hide();
-         $(".username").hide();
-         $("#connectmenu").show();
+         $("#playerlistdiv").hide();
+         $(".usernamediv").hide();
+         $("#connectmenudiv").show();
       }
    } else {
       alert("Websocket is not supported by your browser :c");
