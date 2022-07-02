@@ -32,3 +32,14 @@
 body {
     background-color: paleturquoise;
 }
+
+.username {
+    color: white;
+    position: absolute;
+    bottom: 5px;
+    left: 20px;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #8a8a8a;
+    display: none;
+}
