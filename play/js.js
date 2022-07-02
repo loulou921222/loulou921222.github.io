@@ -54,6 +54,9 @@ function connect() {
                   $(".startbtn").hide()
                }
             }
+            if (command == "gameStarted") {
+               alert("This game has already started!");
+            }
          };
          
          ws.onclose = function() { 
