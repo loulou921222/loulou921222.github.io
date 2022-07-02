@@ -5,29 +5,47 @@ function connect() {
    
    if ("WebSocket" in window) {
       $("#connectmenu").hide();
+      var playerCount = 0;
+      var players = []
+
       try {
          // open websocket
          var ws = new WebSocket(`ws://${IP}:${port}/CTD`);
          
          ws.onopen = function() {
-            
+            $("#playerlist").show();
             // Web Socket is connected, send data using send()
-            ws.send(`clientconnect ${username}`);
+            ws.send(`clientConnect ${username}`);
          };
          
          ws.onmessage = function (evt) { 
-            var received_msg = evt.data;
-            alert(received_msg);
+            var receivedText = evt.data;
+            var command = receivedText.slice(0, receivedText.indexOf(" "));
+            var data = receivedText.slice(receivedText.indexOf(" ") + 1);
+            if (command == "playerCount") {
+               playerCount = parseInt(data);
+               $(".playerCount").text(playerCount);
+            }
+            if (command == "players") {
+               players = data.split(" ")
+               $(".playerList").text()
+               for (playerindex = 0; playerindex < players.length; playerindex++) {
+                  var listitem = '<li>'+ players[playerindex] +'</li>';
+                  $('.playerList').append(listitem);
+               }
+            }
          };
          
          ws.onclose = function() { 
             // websocket is closed.
-            alert("Disconnected"); 
+            alert("Disconnected");
+            $("#playerlist").hide();
             $("#connectmenu").show();
          };
       }
       catch(e) {
          alert("Invalid IP or port");
+         $("#playerlist").hide();
          $("#connectmenu").show();
       }
    } else {

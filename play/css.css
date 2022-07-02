@@ -5,6 +5,18 @@
     padding: 20px;
     border-radius: 15px;
     background-color: #8a8a8a;
+    color: white;
+}
+
+#playerlist {
+    max-width: 400px;
+    max-height: 400px;
+    margin: 25vh auto;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #8a8a8a;
+    color: white;
+    display: none;
 }
 
 .title {

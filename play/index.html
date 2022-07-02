@@ -15,20 +15,24 @@
       <div id="connectmenu">
          <form id="infoform" onsubmit="connect();return false" method="post">
             <div class="mb-3">
-               <label for="username" class="form-label text-white">Username</label>
+               <label for="username" class="form-label">Username</label>
                <input type="text" class="form-control" id="username">
                </div>
             <div class="mb-3">
-            <label for="IP" class="form-label text-white">Server IP</label>
+            <label for="IP" class="form-label">Server IP</label>
             <input type="text" class="form-control" id="IP">
             </div>
             <div class="mb-3">
-            <label for="port" class="form-label text-white">Port</label>
+            <label for="port" class="form-label">Port</label>
             <input type="text" class="form-control" id="port" value="32040">
             </div>
             <input type="submit" hidden />
          </form>
       </div>
-
+      <div id="playerlist">
+         <span>Player count: </span>
+         <span class="playerCount">-</span>
+         <ul class="playerList"></ul>
+      </div>
    </body>
 </html>
