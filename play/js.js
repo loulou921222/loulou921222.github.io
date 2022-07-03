@@ -8,9 +8,10 @@ function connect() {
    var username = $('#username').val();
    var IP = $('#IP').val();
    var port = $('#port').val();
-   
+
    if ("WebSocket" in window) {
       $("#connectmenudiv").hide();
+      var state = 0;
       try {
          // open websocket
          ws = new WebSocket(`ws://${IP}:${port}/CTD`);
@@ -47,65 +48,93 @@ function connect() {
             if (command == "permissionLevel") {
                permissionLevel = parseInt(data);
                if (permissionLevel) {
-                  $(".leadermsg").show()
-                  $(".startbtn").show()
+                  $(".leadermsg").show();
+                  $(".startbtn").show();
+                  if (state == 1) {
+                     $("#endgamediv").show();
+                  }
                }
                else {
-                  $(".leadermsg").hide()
-                  $(".startbtn").hide()
+                  $(".leadermsg").hide();
+                  $(".startbtn").hide();
+                  if (state == 1) {
+                     $("#endgamediv").hide();
+                  }
                }
             }
             if (command == "gameStarted") {
                alert("This game has already started!");
             }
             if (command == "gameStart") {
+               state = 1;
                $("#playerlistdiv").hide()
                $("#enterstringdiv").show()
-               $("#endgamediv").show()
+               if (permissionLevel == 1) {
+                  $("#endgamediv").show();
+               }
             }
             if (command == "gameEnded") {
+               state = 0;
                if (data == "notEnoughPlayers") {
                   alert("Game has ended as there are no longer enough players.");
                }
                if (data == "leaderEnded") {
                   alert("Leader ended game.");
                }
-               $("#endgamediv").hide()
-               $("#enterstringdiv").hide()
-               $("#playerlistdiv").show()
+               $("#endgamediv").hide();
+               $("#enterstringdiv").hide();
+               $("#submittedplayersdiv").hide();
+               $("#playerlistdiv").show();
+               submitted = 0;
+            }
+            if (command == "submittedPlayers") {
+               var submittedPlayers = parseInt(data);
+               if (submitted) {
+                  var remainingPlayers = playerCount - submittedPlayers;
+                  $("#enterstringdiv").hide();
+                  $("#submittedplayersdiv").show();
+                  $(".waitingplayerscount").text(remainingPlayers);
+                  if (remainingPlayers == 1) {
+                     $(".waitingplayersplural").text("player");
+                     $(".stringsplural").text("string");
+                  }
+                  else {
+                     $(".waitingplayersplural").text("players");
+                     $(".stringsplural").text("strings");
+                  }
+               }
             }
          };
          
          ws.onclose = function() { 
             // websocket is closed.
             alert("Disconnected");
-            ws = undefined;
-            playerCount = 0;
-            players = []
-            permissionLevel = 0;
-            $("#endgamediv").hide()
-            $("#enterstringdiv").hide()
-            $("#playerlistdiv").hide();
-            $(".usernamediv").hide();
-            $("#connectmenudiv").show();
+            gamereset();
+
          };
       }
       catch(e) {
          alert("Invalid IP or port");
-         ws = undefined;
-         playerCount = 0;
-         players = []
-         permissionLevel = 0;
-         $("#endgamediv").hide()
-         $("#enterstringdiv").hide()
-         $("#playerlistdiv").hide();
-         $(".usernamediv").hide();
-         $("#connectmenudiv").show();
+         gamereset();
       }
    } else {
       alert("Websocket is not supported by your browser :c");
    }
 }
+
+function gamereset() {
+   ws = undefined;
+   playerCount = 0;
+   players = []
+   permissionLevel = 0;
+   submitted = 0;
+   $("#endgamediv").hide()
+   $("#enterstringdiv").hide();
+   $("#playerlistdiv").hide();
+   $(".usernamediv").hide();
+   $("#submittedplayersdiv").hide()
+   $("#connectmenudiv").show();
+};
 
 function helptext() {
    alert("all players type out a string of characters, let's say player 1 types out \"bananA.\"\n\nplayer 2 sees my message and has to explain it to player 3 in a voice chat or just next to them\n\nplayer 3 has to type out the same string for the game to continue\n\nbe careful! someone might type in \"a in all caps\" or \"period question mark\" or something like that!");
@@ -122,8 +151,8 @@ function startbtnclick() {
 
 function submitstring() {
    submitted = 1;
-   ws.send(`submitString ${$('#inputString').val()}`);
-   $('#inputString').text("");
+   ws.send(`submitString ${$('#inputstring').val()}`);
+   $('#inputstring').val("");
 };
 
 function endgame() {
