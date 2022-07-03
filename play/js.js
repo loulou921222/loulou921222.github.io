@@ -2,6 +2,7 @@ var ws;
 var playerCount = 0;
 var players = []
 var permissionLevel = 0;
+var submitted = 0;
 
 function connect() {
    var username = $('#username').val();
@@ -57,6 +58,22 @@ function connect() {
             if (command == "gameStarted") {
                alert("This game has already started!");
             }
+            if (command == "gameStart") {
+               $("#playerlistdiv").hide()
+               $("#enterstringdiv").show()
+               $("#endgamediv").show()
+            }
+            if (command == "gameEnded") {
+               if (data == "notEnoughPlayers") {
+                  alert("Game has ended as there are no longer enough players.");
+               }
+               if (data == "leaderEnded") {
+                  alert("Leader ended game.");
+               }
+               $("#endgamediv").hide()
+               $("#enterstringdiv").hide()
+               $("#playerlistdiv").show()
+            }
          };
          
          ws.onclose = function() { 
@@ -66,6 +83,8 @@ function connect() {
             playerCount = 0;
             players = []
             permissionLevel = 0;
+            $("#endgamediv").hide()
+            $("#enterstringdiv").hide()
             $("#playerlistdiv").hide();
             $(".usernamediv").hide();
             $("#connectmenudiv").show();
@@ -77,6 +96,8 @@ function connect() {
          playerCount = 0;
          players = []
          permissionLevel = 0;
+         $("#endgamediv").hide()
+         $("#enterstringdiv").hide()
          $("#playerlistdiv").hide();
          $(".usernamediv").hide();
          $("#connectmenudiv").show();
@@ -97,4 +118,14 @@ function startbtnclick() {
    else {
       ws.send("requestStart null");
    }
+};
+
+function submitstring() {
+   submitted = 1;
+   ws.send(`submitString ${$('#inputString').val()}`);
+   $('#inputString').text("");
+};
+
+function endgame() {
+   ws.send("endGame null");
 };

@@ -31,7 +31,7 @@
             </div>
             <div class="mb-3">
             <label for="port" class="form-label">Port</label>
-            <input type="text" class="form-control" id="port" value="32040">
+            <input type="text" class="form-control" id="port" value="32040" maxlength="5">
             </div>
             <input type="submit" hidden />
          </form>
@@ -41,6 +41,18 @@
          <span class="playercount"></span>
          <ul class="playerlist"></ul>
          <button type="button" class="startbtn btn btn-light" onclick="startbtnclick()">Start! (3 or more players are required to start)</button>
+      </div>
+      <div id="enterstringdiv">
+         <form id="stringform" onsubmit="submitstring();return false" method="post">
+            <div class="mb-3">
+               <label for="inputstring" class="form-label">Input your string</label>
+               <input type="text" class="form-control" id="inputstring" autocomplete="off" maxlength="100">
+            </div>
+            <input type="submit" hidden />
+         </form>
+      </div>
+      <div id="endgamediv">
+         <button type="button" class="endbtn btn btn-danger" onclick="endgame()">End game</button>
       </div>
    </body>
 </html>

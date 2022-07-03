@@ -57,3 +57,26 @@ body {
 .startbtn {
     display: none;
 }
+
+#enterstringdiv {
+    max-width: 400px;
+    max-height: 400px;
+    margin: 25vh auto;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #8a8a8a;
+    color: white;
+    display: none;
+}
+
+#endgamediv {
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+}
+
+.endbtn {
+    border-radius: 5px;
+}
