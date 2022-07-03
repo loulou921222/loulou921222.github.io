@@ -50,14 +50,14 @@ function connect() {
                if (permissionLevel) {
                   $(".leadermsg").show();
                   $(".startbtn").show();
-                  if (state == 1) {
+                  if (state != 0) {
                      $("#endgamediv").show();
                   }
                }
                else {
                   $(".leadermsg").hide();
                   $(".startbtn").hide();
-                  if (state == 1) {
+                  if (state != 0) {
                      $("#endgamediv").hide();
                   }
                }
@@ -67,8 +67,9 @@ function connect() {
             }
             if (command == "gameStart") {
                state = 1;
-               $("#playerlistdiv").hide()
-               $("#enterstringdiv").show()
+               $("#playerlistdiv").hide();
+               $("#enterstringdiv").show();
+               $("#inputstring").focus();
                if (permissionLevel == 1) {
                   $("#endgamediv").show();
                }
@@ -103,6 +104,10 @@ function connect() {
                      $(".stringsplural").text("strings");
                   }
                }
+            }
+            if (command == "guessStart") {
+               state = 2;
+               $("#submittedplayersdiv").hide();
             }
          };
          
@@ -157,4 +162,8 @@ function submitstring() {
 
 function endgame() {
    ws.send("endGame null");
+};
+
+function onload() {
+   $("#username").focus();
 };
