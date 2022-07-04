@@ -183,13 +183,11 @@ function replaceillegalchars(e) {
    var validChars = [' ', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', '{', ']', '}', '\\', '|', ';', ':', "'", '"', ',', '<', '.', '>', '/', '?'];
    var valid = "";
    for (var char = 0; char < e.value.length; char++) {
-      console.log(e.value[char]);
       if (validChars.includes(e.value[char])) {
          valid += e.value[char];
       }
       else {
          $(".illegalchar").val(valid);
-         console.log(valid);
       }
    }
 };
