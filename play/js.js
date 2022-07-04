@@ -3,6 +3,7 @@ var playerCount = 0;
 var players = []
 var permissionLevel = 0;
 var submitted = 0;
+var myguess;
 
 function connect() {
    var username = $('#username').val();
@@ -109,6 +110,20 @@ function connect() {
                state = 2;
                $("#submittedplayersdiv").hide();
             }
+            if (command == "playerRole") {
+               if (data == "explainer") {
+                  console.log("explainer")
+               }
+               if (data == "guesser") {
+                  console.log("guesser")
+               }
+               if (data == "writer") {
+                  console.log("writer")
+               }
+               if (data == "idler") {
+                  console.log("idle")
+               }
+            }
          };
          
          ws.onclose = function() { 
@@ -156,7 +171,8 @@ function startbtnclick() {
 
 function submitstring() {
    submitted = 1;
-   ws.send(`submitString ${$('#inputstring').val()}`);
+   myguess = $('#inputstring').val()
+   ws.send(`submitString ${myguess}`);
    $('#inputstring').val("");
 };
 
