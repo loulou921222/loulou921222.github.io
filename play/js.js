@@ -64,7 +64,7 @@ function connect() {
                }
             }
             if (command == "gameStarted") {
-               alert("This game has already started!");
+               bsalert("This game has already started!");
             }
             if (command == "gameStart") {
                state = 1;
@@ -78,10 +78,10 @@ function connect() {
             if (command == "gameEnded") {
                state = 0;
                if (data == "notEnoughPlayers") {
-                  alert("Game has ended as there are no longer enough players.");
+                  bsalert("Game has ended as there are no longer enough players.");
                }
                if (data == "leaderEnded") {
-                  alert("Leader ended game.");
+                  bsalert("Leader ended game.");
                }
                $("#endgamediv").hide();
                $("#enterstringdiv").hide();
@@ -123,13 +123,13 @@ function connect() {
          
          ws.onclose = function() { 
             // websocket is closed.
-            alert("Disconnected");
+            bsalert("Disconnected");
             gamereset();
 
          };
       }
       catch(e) {
-         alert("Invalid IP or port");
+         bsalert("Invalid IP or port");
          gamereset();
       }
    } else {
@@ -152,12 +152,12 @@ function gamereset() {
 };
 
 function helptext() {
-   alert("all players type out a string of characters, let's say player 1 types out \"bananA.\"\n\nplayer 2 sees my message and has to explain it to player 3 in a voice chat or just next to them\n\nplayer 3 has to type out the same string for the game to continue\n\nbe careful! someone might type in \"a in all caps\" or \"period question mark\" or something like that!");
+   helpalert();
 };
 
 function startbtnclick() {
    if (playerCount < 3) {
-      alert("3 or more players are required to start!");
+      bsalert("3 or more players are required to start!");
    }
    else {
       ws.send("requestStart null");
@@ -190,4 +190,22 @@ function replaceillegalchars(e) {
          $(".illegalchar").val(valid);
       }
    }
+};
+
+function bsalert(text) {
+   $("#alertbox").addClass("show");
+   $("#alerttext").html(text);
+   $("#alertclosebtn").focus();
+};
+
+function bsinfo(text) {
+   var toast = document.getElementById("infobox");
+   var bstoast = new bootstrap.Toast(toast);
+   bstoast.show();
+   $("#infotext").html(text);
+};
+
+function helpalert() {
+   $("#helpbox").addClass("show");
+   $("#helpclosebtn").focus();
 };

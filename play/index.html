@@ -10,6 +10,7 @@
         <script type="text/javascript" src="js.js"></script>
    </head>
    <body onload="onload();">
+      
       <div class="linkdiv">
          <a href="../download/CTDServer.jar" class="link" download>server download</a>
          <a href="javascript:;" class="link" onclick="helptext()">help</a>
@@ -62,6 +63,41 @@
       </div>
       <div id="endgamediv">
          <button type="button" class="endbtn btn btn-danger" onclick="endgame()">End game</button>
+      </div>
+      <div class="toast" id="helpbox">
+         <div class="toast-header">
+           <strong class="me-auto">Help</strong>
+           <button type="button" class="btn-close" data-bs-dismiss="toast" id="helpclosebtn"></button>
+         </div>
+         <div class="toast-body">
+           <p>
+            all players type out a string of characters, let's say player 1 types out "bananA."
+            <br><br>
+            player 2 sees my message and has to explain it to player 3 in a voice chat or just next to them
+            <br><br>
+            player 3 has to type out the same string for the game to continue
+            <br><br>
+            be careful! someone might type in "a in all caps" or "period question mark" or something like that!
+            </p>
+         </div>
+      </div>
+      <div class="toast" id="alertbox">
+         <div class="toast-header">
+           <strong class="me-auto">Alert</strong>
+           <button type="button" class="btn-close" data-bs-dismiss="toast" id="alertclosebtn"></button>
+         </div>
+         <div class="toast-body">
+           <p id="alerttext"></p>
+         </div>
+      </div>
+      <div class="toast" id="infobox">
+         <div class="toast-header">
+           <strong class="me-auto">Info</strong>
+           <button type="button" class="btn-close" data-bs-dismiss="toast" id="infoclosebtn"></button>
+         </div>
+         <div class="toast-body">
+           <p id="infotext"></p>
+         </div>
       </div>
    </body>
 </html>

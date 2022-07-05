@@ -91,3 +91,22 @@ body {
 .endbtn {
     border-radius: 5px;
 }
+
+#alertbox {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -40%);
+}
+
+#helpbox {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -40%);
+}
+
+#infobox {
+    position: absolute;
+    bottom: 70px;
+}
