@@ -10,10 +10,9 @@
         <script type="text/javascript" src="js.js"></script>
    </head>
    <body onload="onload();">
-      
       <div class="linkdiv">
          <a href="../download/CTDServer.jar" class="link" download>server download</a>
-         <a href="javascript:;" class="link" onclick="helptext()">help</a>
+         <a href="javascript:;" class="link" onclick="helpalert();">help</a>
       </div>
       <div class="usernamediv">
          <span class="username">loulou921222!</span>
@@ -21,7 +20,7 @@
       </div>
       <h1 class="title text-center">cipher. transpher. decipher.</h1>
       <div id="connectmenudiv">
-         <form id="infoform" onsubmit="connect();return false" method="post">
+         <form id="infoform" onsubmit="connect();return false;" method="post">
             <div class="mb-3">
                <label for="username" class="form-label">Username</label>
                <input type="text" class="form-control illegalchar" id="username" oninput="replaceillegalchars(this);">
@@ -44,7 +43,7 @@
          <button type="button" class="startbtn btn btn-light" onclick="startbtnclick()">Start! (3 or more players are required to start)</button>
       </div>
       <div id="enterstringdiv">
-         <form id="stringform" onsubmit="submitstring();return false" method="post">
+         <form id="stringform" onsubmit="submitstring();return false;" method="post">
             <div class="mb-3">
                <label for="inputstring" class="form-label">Input your string</label>
                <input type="text" class="form-control" id="inputstring" autocomplete="off" maxlength="100">
@@ -61,13 +60,27 @@
          <span class="stringsplural"></span>
          <span>...</span>
       </div>
+      <div id="gamemaindiv">
+         <form id="gameform" onsubmit="return false;" method="post">
+            <div class="mb-3">
+               <label for="gamemain-string" class="form-label">You must explain the following string to&nbsp;</label><b><span class="gamemain-guesser"></span></b><span>:</span>
+               <textarea id="gamemain-string" autocomplete="off" rows="3" readonly></textarea>
+            </div>
+            <div class="mb-3">
+               <label for="inputguess" class="form-label">Enter the string given to you by&nbsp;</label><b><span class="gamemain-explainer"></span></b><span>:</span>
+               <input type="text" class="form-control" id="inputguess" autocomplete="off" maxlength="100">
+            </div>
+            <input type="submit" hidden />
+         </form>
+         <button type="button" class="gamesubmitbtn btn btn-light" onclick="gamesubmitbtnclick()">Submit (When all players are ready)</button>
+      </div>
       <div id="endgamediv">
          <button type="button" class="endbtn btn btn-danger" onclick="endgame()">End game</button>
       </div>
       <div class="toast" id="helpbox">
          <div class="toast-header">
            <strong class="me-auto">Help</strong>
-           <button type="button" class="btn-close" data-bs-dismiss="toast" id="helpclosebtn"></button>
+           <button type="button" class="btn-close" id="helpclosebtn" onclick= closehelp();"></button>
          </div>
          <div class="toast-body">
            <p>
@@ -84,7 +97,7 @@
       <div class="toast" id="alertbox">
          <div class="toast-header">
            <strong class="me-auto">Alert</strong>
-           <button type="button" class="btn-close" data-bs-dismiss="toast" id="alertclosebtn"></button>
+           <button type="button" class="btn-close" id="alertclosebtn" onclick="closealert();"></button>
          </div>
          <div class="toast-body">
            <p id="alerttext"></p>

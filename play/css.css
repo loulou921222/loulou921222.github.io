@@ -56,6 +56,7 @@ body {
 
 .startbtn {
     display: none;
+    width: 100%;
 }
 
 #enterstringdiv {
@@ -109,4 +110,25 @@ body {
 #infobox {
     position: absolute;
     bottom: 70px;
+}
+
+#gamemaindiv {
+    max-width: 400px;
+    max-height: 400px;
+    margin: 25vh auto;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #8a8a8a;
+    color: white;
+    display: none;
+}
+
+#gamemain-string {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.gamesubmitbtn {
+    display: none;
+    width: 100%;
 }

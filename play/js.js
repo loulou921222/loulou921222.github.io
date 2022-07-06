@@ -1,9 +1,12 @@
 var ws;
 var playerCount = 0;
-var players = []
+var players = [];
 var permissionLevel = 0;
 var submitted = 0;
 var myguess;
+var kickedGameStarted = 0;
+var alertFocus = 0;
+var state;
 
 function connect() {
    var username = $('#username').val();
@@ -12,20 +15,20 @@ function connect() {
 
    if ("WebSocket" in window) {
       $("#connectmenudiv").hide();
-      var state = 0;
+      state = 0;
       try {
          // open websocket
          ws = new WebSocket(`ws://${IP}:${port}/CTD`);
-         
-         ws.onopen = function() {
+
+         ws.onopen = function () {
+            // Web Socket is connected, send data using send()
+            ws.send(`clientConnect ${username}`);
             $("#playerlistdiv").show();
             $(".username").text(username);
             $(".usernamediv").show();
-            // Web Socket is connected, send data using send()
-            ws.send(`clientConnect ${username}`);
          };
-         
-         ws.onmessage = function (evt) { 
+
+         ws.onmessage = function (evt) {
             var receivedText = evt.data;
             var command = receivedText.slice(0, receivedText.indexOf(" "));
             var data = receivedText.slice(receivedText.indexOf(" ") + 1);
@@ -38,10 +41,10 @@ function connect() {
                $(".playerlist").text("")
                for (playerindex = 0; playerindex < players.length; playerindex++) {
                   if (playerindex == 0) {
-                     var listitem = '<li>'+ players[playerindex] + ' (leader)</li>';
+                     var listitem = '<li>' + players[playerindex] + ' (leader)</li>';
                   }
                   else {
-                     var listitem = '<li>'+ players[playerindex] +'</li>';
+                     var listitem = '<li>' + players[playerindex] + '</li>';
                   }
                   $('.playerlist').append(listitem);
                }
@@ -65,13 +68,17 @@ function connect() {
             }
             if (command == "gameStarted") {
                bsalert("This game has already started!");
+               kickedGameStarted = 1;
             }
             if (command == "gameStart") {
                state = 1;
                $("#playerlistdiv").hide();
                $("#enterstringdiv").show();
-               $("#inputstring").focus();
-               if (permissionLevel == 1) {
+               $('#inputstring').val("");
+               if (!alertFocus) {
+                  $("#inputstring").focus();
+               }
+               if (permissionLevel) {
                   $("#endgamediv").show();
                }
             }
@@ -86,6 +93,7 @@ function connect() {
                $("#endgamediv").hide();
                $("#enterstringdiv").hide();
                $("#submittedplayersdiv").hide();
+               $("#gamemaindiv").hide();
                $("#playerlistdiv").show();
                submitted = 0;
             }
@@ -109,31 +117,118 @@ function connect() {
             if (command == "guessStart") {
                state = 2;
                $("#submittedplayersdiv").hide();
+               $("#gamemaindiv").show();
+               $('#inputguess').val("");
+               if (permissionLevel) {
+                  $(".gamesubmitbtn").show();
+               }
+               else {
+                  $(".gamesubmitbtn").hide();
+               }
+               if (!alertFocus) {
+                  $("#inputguess").focus();
+               }
             }
             if (command == "explainer") {
-               console.log(`explainer ${data}`)
+               $(".gamemain-explainer").text(data);
             }
             if (command == "guesser") {
-               console.log(`guesser ${data}`)
+               $(".gamemain-guesser").text(data);
             }
             if (command == "string") {
-               console.log(`string ${data}`)
+               $("#gamemain-string").text(data);
+            }
+            if (command == "playerLeave") {
+               var guesserChanged;
+               var explainerChanged;
+               var stringChanged;
+               var answerChanged;
+               changeData = data.slice(0, data.indexOf(" "));
+               leaverName = data.slice(data.indexOf(" ") + 1);
+               for (charindex = 0; charindex < data.length; charindex++) {
+                  char = changeData.charAt(charindex);
+                  if (charindex == 0) {
+                     if (char == "0") {
+                        guesserChanged = false;
+                     }
+                     if (char == "1") {
+                        guesserChanged = true;
+                     }
+                  }
+                  if (charindex == 1) {
+                     if (char == "0") {
+                        explainerChanged = false;
+                     }
+                     if (char == "1") {
+                        explainerChanged = true;
+                     }
+                  }
+                  if (charindex == 2) {
+                     if (char == "0") {
+                        stringChanged = false;
+                     }
+                     if (char == "1") {
+                        stringChanged = true;
+                     }
+                  }
+                  if (charindex == 3) {
+                     if (char == "0") {
+                        answerChanged = false;
+                     }
+                     if (char == "1") {
+                        answerChanged = true;
+                     }
+                  }
+               }
+               
+               if (!answerChanged && !explainerChanged && !stringChanged && !guesserChanged) {
+                  bsinfo(`${leaverName} has left the game. However, this does not affect you.`)
+               }
+               else {
+                  var changedReadable = [];
+                  if (answerChanged) {
+                     changedReadable.push("The string you were inputting");
+                  }
+                  if (explainerChanged) {
+                     changedReadable.push("The person who was giving you your string to input");
+                  }
+                  if (stringChanged) {
+                     changedReadable.push("The string you were reading out");
+                  }
+                  if (guesserChanged) {
+                     changedReadable.push("The person you were explaining your string to");
+                  }
+                  var alertMessage = `Due to ${leaverName} leaving, the game had to be re-shuffled. The following have changed: <br>`;
+                  alertMessage += "<ul>";
+                  for (i = 0; i < changedReadable.length; i++) {
+                     var listitem = '<li>' + changedReadable[i] + '</li>';
+                     alertMessage += listitem;
+                  }
+                  alertMessage += "</ul>";
+
+                  bsalert(alertMessage);
+               }
             }
          };
-         
-         ws.onclose = function() { 
+
+         ws.onclose = function () {
             // websocket is closed.
-            bsalert("Disconnected");
+            if (kickedGameStarted) {
+               kickedGameStarted = 0;
+            }
+            else {
+               bsalert("Disconnected");
+            }
             gamereset();
 
          };
       }
-      catch(e) {
+      catch (e) {
          bsalert("Invalid IP or port");
          gamereset();
       }
    } else {
-      alert("Websocket is not supported by your browser :c");
+      bsalert("Websocket is not supported by your browser :c");
    }
 }
 
@@ -149,10 +244,7 @@ function gamereset() {
    $(".usernamediv").hide();
    $("#submittedplayersdiv").hide()
    $("#connectmenudiv").show();
-};
-
-function helptext() {
-   helpalert();
+   $("#gamemaindiv").hide();
 };
 
 function startbtnclick() {
@@ -168,11 +260,12 @@ function submitstring() {
    submitted = 1;
    myguess = $('#inputstring').val()
    ws.send(`submitString ${myguess}`);
-   $('#inputstring').val("");
 };
 
 function endgame() {
-   ws.send("endGame null");
+   if (window.confirm("Are you sure you want to end the game?")) {
+      ws.send("endGame null");
+   }
 };
 
 function onload() {
@@ -196,6 +289,7 @@ function bsalert(text) {
    $("#alertbox").addClass("show");
    $("#alerttext").html(text);
    $("#alertclosebtn").focus();
+   alertFocus = 1;
 };
 
 function bsinfo(text) {
@@ -208,4 +302,29 @@ function bsinfo(text) {
 function helpalert() {
    $("#helpbox").addClass("show");
    $("#helpclosebtn").focus();
+   alertFocus = 1;
+};
+
+function alertfocuscancel() {
+   alertFocus = 0;
+   if (state == undefined) {
+      $("#username").focus();
+   }
+   if (state == 1) {
+      $("#inputstring").focus();
+   }
+   if (state == 2) {
+      $("#inputguess").focus();
+   }
+};
+
+
+function closehelp() {
+   $("#helpbox").removeClass("show");
+   alertfocuscancel();
+};
+
+function closealert(text) {
+   $("#alertbox").removeClass("show");
+   alertfocuscancel();
 };
