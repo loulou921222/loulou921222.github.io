@@ -132,3 +132,18 @@ body {
     display: none;
     width: 100%;
 }
+
+#endscreendiv {
+    max-width: 400px;
+    max-height: 400px;
+    margin: 25vh auto;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #8a8a8a;
+    display: none;
+}
+
+.endscreentitle {
+    font-size: 28pt;
+    color: lime;
+}

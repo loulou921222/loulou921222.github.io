@@ -3,7 +3,7 @@ var playerCount = 0;
 var players = [];
 var permissionLevel = 0;
 var submitted = 0;
-var myguess;
+var mystring;
 var kickedGameStarted = 0;
 var alertFocus = 0;
 var state;
@@ -83,19 +83,14 @@ function connect() {
                }
             }
             if (command == "gameEnded") {
-               state = 0;
                if (data == "notEnoughPlayers") {
                   bsalert("Game has ended as there are no longer enough players.");
                }
                if (data == "leaderEnded") {
                   bsalert("Leader ended game.");
                }
-               $("#endgamediv").hide();
-               $("#enterstringdiv").hide();
-               $("#submittedplayersdiv").hide();
-               $("#gamemaindiv").hide();
-               $("#playerlistdiv").show();
-               submitted = 0;
+               returnToPlayerList();
+               
             }
             if (command == "submittedPlayers") {
                var submittedPlayers = parseInt(data);
@@ -209,6 +204,18 @@ function connect() {
                   bsalert(alertMessage);
                }
             }
+            if (command == "requestGuess") {
+               var myguess = $('#inputguess').val();
+               ws.send(`submitGuess ${myguess}`);
+            }
+            if (command == "incorrect") {
+               bsalert("One or more answers is/are incorrect! Check your answers through again, and try again.");
+            }
+            if (command == "correct") {
+               $("#gamemaindiv").hide();
+               $("#endscreendiv").show();
+               setTimeout(returnToPlayerList, 8000);
+            }
          };
 
          ws.onclose = function () {
@@ -220,7 +227,7 @@ function connect() {
                bsalert("Disconnected");
             }
             gamereset();
-
+            state = undefined;
          };
       }
       catch (e) {
@@ -245,7 +252,19 @@ function gamereset() {
    $("#submittedplayersdiv").hide()
    $("#connectmenudiv").show();
    $("#gamemaindiv").hide();
+   $("#endscreendiv").hide();
 };
+
+function returnToPlayerList() {
+   state = 1;
+   submitted = 0;
+   $("#endgamediv").hide();
+   $("#enterstringdiv").hide();
+   $("#submittedplayersdiv").hide();
+   $("#gamemaindiv").hide();
+   $("#playerlistdiv").show();
+   $("#endscreendiv").hide();
+}
 
 function startbtnclick() {
    if (playerCount < 3) {
@@ -258,8 +277,8 @@ function startbtnclick() {
 
 function submitstring() {
    submitted = 1;
-   myguess = $('#inputstring').val()
-   ws.send(`submitString ${myguess}`);
+   mystring = $('#inputstring').val()
+   ws.send(`submitString ${mystring}`);
 };
 
 function endgame() {
@@ -324,7 +343,11 @@ function closehelp() {
    alertfocuscancel();
 };
 
-function closealert(text) {
+function closealert() {
    $("#alertbox").removeClass("show");
    alertfocuscancel();
+};
+
+function gamesubmitbtnclick() {
+   ws.send("checkAnswers null");
 };

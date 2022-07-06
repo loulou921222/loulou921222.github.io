@@ -74,13 +74,16 @@
          </form>
          <button type="button" class="gamesubmitbtn btn btn-light" onclick="gamesubmitbtnclick()">Submit (When all players are ready)</button>
       </div>
+      <div id="endscreendiv">
+         <h1 class="text-center endscreentitle">All answers correct!</h1>
+      </div>
       <div id="endgamediv">
          <button type="button" class="endbtn btn btn-danger" onclick="endgame()">End game</button>
       </div>
       <div class="toast" id="helpbox">
          <div class="toast-header">
            <strong class="me-auto">Help</strong>
-           <button type="button" class="btn-close" id="helpclosebtn" onclick= closehelp();"></button>
+           <button type="button" class="btn-close" id="helpclosebtn" onclick="closehelp();"></button>
          </div>
          <div class="toast-body">
            <p>
