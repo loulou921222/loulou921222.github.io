@@ -23,7 +23,7 @@
          <form id="infoform" onsubmit="connect();return false;" method="post">
             <div class="mb-3">
                <label for="username" class="form-label">Username</label>
-               <input type="text" class="form-control illegalchar" id="username" oninput="replaceillegalchars(this);">
+               <input type="text" class="form-control" id="username">
                </div>
             <div class="mb-3">
             <label for="IP" class="form-label">Server IP</label>
@@ -46,7 +46,7 @@
          <form id="stringform" onsubmit="submitstring();return false;" method="post">
             <div class="mb-3">
                <label for="inputstring" class="form-label">Input your string</label>
-               <input type="text" class="form-control" id="inputstring" autocomplete="off" maxlength="100">
+               <input type="text" class="form-control illegalchar" id="inputstring" autocomplete="off" maxlength="100" oninput="replaceillegalchars(this);">
             </div>
             <input type="submit" hidden />
          </form>
