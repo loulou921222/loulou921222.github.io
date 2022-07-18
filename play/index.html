@@ -68,7 +68,7 @@
             </div>
             <div class="mb-3">
                <label for="inputguess" class="form-label">Enter the string given to you by&nbsp;</label><b><span class="gamemain-explainer"></span></b><span>:</span>
-               <input type="text" class="form-control" id="inputguess" autocomplete="off" maxlength="100">
+               <input type="text" class="form-control illegalchar" id="inputguess" autocomplete="off" maxlength="100" oninput="replaceillegalchars(this);">
             </div>
             <input type="submit" hidden />
          </form>
